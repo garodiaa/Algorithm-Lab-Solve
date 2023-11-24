@@ -1,0 +1,34 @@
+//SouravGarodia 221-15-5048
+#include<bits/stdc++.h>
+using namespace std;
+#define endl "\n"
+
+int solveMem(vector<int> &wt,vector<int> &val, int ind, int W, vector<vector<int>> &dp)
+{
+    if(ind == 0)return (W/wt[0])*val[0];
+    if(dp[ind][W] != -1) return dp[ind][W];
+
+    int notTaken = 0 + solveMem(wt, val, ind-1, W, dp);
+    int taken  = INT_MIN;
+    if(wt[ind]<=W)
+    {
+        taken  = val[ind] + solveMem(wt, val, ind, W-wt[ind], dp);
+    }
+    return dp[ind][W] = max (taken, notTaken);
+}
+
+int main()
+{
+    vector<int> val = {5,11,13};
+    vector<int> wt = {2,4,6};
+
+    int W = 10;
+    int n = wt.size();
+
+    vector<vector<int>> dp(n,vector<int> (W+1,-1));
+    int ans = solveMem(wt,val, n-1, W, dp);
+
+    cout<<ans<<endl;
+
+    return 0;
+}
